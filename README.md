@@ -1,0 +1,2 @@
+# nudes
+nushell configs
