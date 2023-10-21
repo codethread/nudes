@@ -1,5 +1,5 @@
 use ct/core [nuopen clog is-not-empty];
-use ct/brew/constants.nu [menus types];
+use constants.nu [menus types];
 
 # NOTES:
 # `default` filter could be useful

@@ -1,6 +1,6 @@
 use ct/core [clog nud is-not-empty]
-use ct/brew/barman.nu
-use ct/brew/constants.nu [types]
+use barman.nu
+use constants.nu [types]
 
 # Homebrew enhancements
 # mainly around installing will automatically be saved to a chosen profile (menu to stretch the brew metaphor)
@@ -23,12 +23,6 @@ export def sync [
     echo $brewfile | brewfile save
     ^brew bundle
   }
-}
-
-export def testy [] {
-  $env.CT_LOG = true
-  barman open
-  | barman menu get --taps
 }
 
 # Install a tap, saving it to a given cocktail

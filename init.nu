@@ -2,7 +2,8 @@ use ct/config/prompt.nu
 use ct/themes.nu themes
 use ct/config [keybindings menus]
 use ct/core *
-use ct/alias *
+
+source ct/alias/mod.nu
 
 use ct/tmux
 use ct/brew
