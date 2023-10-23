@@ -9,6 +9,23 @@ export alias npl = npm -g ls --depth=0
 # INVALID multiline
 # export alias yy = eval \$(cat package.json | jq -S '.scripts' | sed '1d;$d' | fzf -i --header='[run:]' | sed -E \"s/\\\"(.*)\\\":.*/yarn run \\1/\" )
 
+export def pjs [...deps: string] {
+  let search = ($deps | str join "|" | $"\(($in)\)")
+
+  fd package.json
+    | lines
+    | par-each {|| nuopen $in }
+    | where {|| "dependencies" in $in }
+    | par-each {|pj|
+        let found = ($pj | get dependencies | transpose name version | where name =~ $search)
+        if ($found | is-not-empty) {
+          $found | insert package $pj.name
+        }
+    }
+    | reduce {|it, acc| $acc ++ $it }
+    | move package --before name
+}
+
 export def rn-nuke [] {
   gnuke 
     yarn 

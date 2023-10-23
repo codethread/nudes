@@ -19,11 +19,11 @@ export def sync [
     | barman menu get
     | brewfile new
     | match $dry_run {
-      true => { $in },
-      _ => {
-      $in | clog "saving" | brewfile save
-      ^brew bundle
-      }
+        true => { $in },
+        _ => {
+          $in | clog "saving" | brewfile save
+          ^brew bundle
+        }
     }
 }
 
@@ -174,14 +174,14 @@ def bundle [] {
 
 # Create a brewfile string from a menu
 # XXX might need to be sorted with taps first
-def "brewfile new" []: table -> string {
+def "brewfile new" [] {
   clog "creating brewfile"
   | par-each { |d| $"($d.type) \"($d.name)\"" }
   | str join "\n"
   | clog "brewfile:"
 }
 
-def "brewfile save" []: table -> nothing {
+def "brewfile save" [] {
   clog $"saving brewfile ($env.HOMEBREW_BUNDLE_FILE)"
   | save --force ($env.HOMEBREW_BUNDLE_FILE | path expand)
 }

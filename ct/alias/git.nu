@@ -224,6 +224,13 @@ export def gnew [name: string] {
   git branch --unset-upstream err+out> /dev/null
 }
 
+export def gmm [] {
+    let main = (git_main_branch)
+    git fetch $"($main):($main)"
+    git rebase $main
+}
+
+
 export def gls [] {
   let line = (git log --oneline --decorate --color=always --format="%C(yellow)[%h] %C(magenta)%<(15)(%an)%C(auto): %s" | fzf --ansi --no-sort --reverse --tiebreak=index)
   print $line
