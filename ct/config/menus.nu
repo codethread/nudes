@@ -1,4 +1,5 @@
-export const menus = [
+export def main [] {
+  [
     # Configuration for default nushell menus
     # Note the lack of source parameter
     {
@@ -49,5 +50,5 @@ export const menus = [
             description_text: yellow
         }
     }
-
 ]
+}

@@ -15,14 +15,16 @@ export def sync [
 ] {
   if ($log == true) { $env.CT_LOG = true }
 
-  let brewfile = barman open | brewfile new
-
-  if ($dry_run) {
-    print $brewfile
-  } else {
-    echo $brewfile | brewfile save
-    ^brew bundle
-  }
+  barman open 
+    | barman menu get
+    | brewfile new
+    | match $dry_run {
+      true => { $in },
+      _ => {
+      $in | clog "saving" | brewfile save
+      ^brew bundle
+      }
+    }
 }
 
 # Install a tap, saving it to a given cocktail

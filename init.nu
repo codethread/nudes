@@ -8,9 +8,14 @@ source ct/alias/mod.nu
 use ct/tmux
 use ct/brew
 
-$env.config = {
-    keybindings: $keybindings
-    menus: $menus
+let base_config = {
+  hooks: {},
+  keybindings: {}
+  completions: {}
+  menus: []
+}
+
+let config = {
     show_banner: false # true or false to enable or disable the welcome banner at startup
 
     ls: {
@@ -83,18 +88,6 @@ $env.config = {
         isolation: false 
     }
 
-    completions: {
-        case_sensitive: false # set to true to enable case-sensitive completions
-        quick: true    # set this to false to prevent auto-selecting completions when only one remains
-        partial: true    # set this to false to prevent partial filling of the prompt
-        algorithm: "fuzzy"
-        external: {
-            enable: true # set to false to prevent nushell looking into $env.PATH to find more suggestions, `false` recommended for WSL users as this look up may be very slow
-            max_results: 100 # setting it lower can improve completion performance at the cost of omitting some options
-            completer: null # check 'carapace_completer' above as an example
-        }
-    }
-
     filesize: {
         metric: true # true => KB, MB, GB (ISO standard), false => KiB, MiB, GiB (Windows standard)
         format: "auto" # b, kb, kib, mb, mib, gb, gib, tb, tib, pb, pib, eb, eib, auto
@@ -116,15 +109,34 @@ $env.config = {
     edit_mode: emacs # emacs, vi
     shell_integration: true # enables terminal shell integration. Off by default, as some terminals have issues with this.
     render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
-
-    hooks: {
-        pre_prompt: [{ null }] # run before the prompt is shown
-        pre_execution: [{ null }] # run before the repl input is run
-        env_change: {
-            PWD: [{|before, after| null }] # run if the PWD environment is different since the last repl input
-        }
-        display_output: "if (term size).columns >= 100 { table -e } else { table }" # run to display the output of a pipeline
-        command_not_found: { null } # return an error message when a command is not found
-    }
 }
 
+$env.config = ($base_config | merge $env.config | merge $config)
+
+$env.config = ($env.config | upsert keybindings ($env.config.keybindings ++ $keybindings))
+
+$env.config = ($env.config | upsert menus ($env.config.menus ++ menus))
+
+$env.config = ($env.config | upsert completions ($env.config.completions | merge {
+    case_sensitive: false # set to true to enable case-sensitive completions
+    quick: true    # set this to false to prevent auto-selecting completions when only one remains
+    partial: true    # set this to false to prevent partial filling of the prompt
+    algorithm: "fuzzy"
+    # external: {
+    #     enable: true # set to false to prevent nushell looking into $env.PATH to find more suggestions, `false` recommended for WSL users as this look up may be very slow
+    #     max_results: 100 # setting it lower can improve completion performance at the cost of omitting some options
+    #     completer: null # check 'carapace_completer' above as an example
+    # }
+}))
+
+$env.config = ($env.config | upsert hooks ({
+    pre_prompt: [{ null }] # run before the prompt is shown
+    pre_execution: [{ null }] # run before the repl input is run
+    env_change: {
+        PWD: [{|before, after| null }] # run if the PWD environment is different since the last repl input
+    }
+    display_output: "if (term size).columns >= 100 { table -e } else { table }" # run to display the output of a pipeline
+    command_not_found: { null } # return an error message when a command is not found
+  } 
+  | merge $env.config.hooks
+))
