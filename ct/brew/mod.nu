@@ -23,6 +23,7 @@ export def sync [
         _ => {
           $in | clog "saving" | brewfile save
           ^brew bundle
+          # probably want to clean after
         }
     }
 }

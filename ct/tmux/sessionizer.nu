@@ -3,7 +3,7 @@ use ct/tmux/utils.nu to-session
 use ct/tmux/projects.nu [get-projects load-config]
 
 export def main [
-  x?: int
+  x = -1
   --log
 ] {
   if ($log == true) { $env.CT_LOG = true }
@@ -12,7 +12,7 @@ export def main [
 
   let project = (load-config
     | match $x {
-      null => { $in | user-get-project },
+      -1 => { $in | user-get-project },
       0..9 => { $in | get-projects | where key == $"P($x)" | get 0?.name },
       _    => { ^tmux display-message $"invalid selection, expected 0..9" }
     })
