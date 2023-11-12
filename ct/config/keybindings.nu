@@ -511,4 +511,15 @@ export const keybindings = [
           )"
       }
     }
+    {
+      name: fuzzy_dir
+      modifier: alt
+      keycode: char_c
+      mode: [emacs, vi_normal, vi_insert]
+      event: {
+          send: executehostcommand
+          cmd: "cd (fd --hidden --type d --exclude '{Library,Music,Applications,Pictures,Unity,VirtualBox VMs,WebstormProjects,Tools,node_modules,.git,.cargo,go}' . $env.HOME
+              | fzf)"
+      }
+    }
 ]
