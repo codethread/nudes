@@ -39,6 +39,11 @@ def alert [] {
   afplay /System/Library/Sounds/Glass.aiff
 }
 
+# I always forget
+def symlink [original: path, symbolic: path] {
+  ln -s $original $symbolic
+}
+
 #---------------------------------------------#
 # HOMEBREW
 #---------------------------------------------#

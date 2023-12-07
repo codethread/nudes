@@ -3,12 +3,8 @@ use ct/core *
 const timestamps = [start_date end_date last_modified creation_date]
 
 # For each event in a table, update all the timestamp fields to show as nushell durations
-export def update-time-to-duration []: table -> table {
-  par-each {|r|
-    $r | merge (
-      $r | map-to-durations $timestamps --zero-year 2001
-    )
-  }
+export def update-time-to-duration [] {
+  par-each {|r| $r | merge (echo $r | map-to-durations $timestamps --zero-year=2001) } 
 }
 
 # For a given set of columns, update each from a sqlite zero time to a nushell duration

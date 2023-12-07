@@ -28,8 +28,14 @@ export def pjs [...deps: string] {
     | move package --before name
 }
 
+export def prettier-changed [] {
+  git diff --name-only --diff-filter=d 
+  | lines 
+  | par-each { node_modules/.bin/prettier --write $in }
+}
+
 export def rn-nuke [] {
-  gnuke 
+    git clean -dfX
     yarn 
     cd ios 
     pod install 

@@ -14,11 +14,12 @@ export def main [
     | match $x {
       -1 => { $in | user-get-project },
       0..9 => { $in | get-projects | where key == $"P($x)" | get 0?.name },
-      _    => { ^tmux display-message $"invalid selection, expected 0..9" }
+      _    => { clog $"invalid selection, expected 0..9" }
     })
 
   if ($project | is-empty) {
-    print "no project selected"
+    clog "no project selected";
+    return
   } else {
 
     let $session = ($project | path basename | to-session)

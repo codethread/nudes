@@ -1,8 +1,8 @@
-def git_current_branch [] {
+export def git_current_branch [] {
     (gstat).branch
 }
 
-def git_main_branch [] {
+export def git_main_branch [] {
   git symbolic-ref refs/remotes/origin/HEAD | str trim | split row "/" | last
 }
 
@@ -44,8 +44,8 @@ export alias gcd = git checkout develop
 export alias gcf = git config --list
 
 export alias gcl = git clone --recurse-submodules
-# export alias gclean = git clean -dfX
-export alias gclean = git clean --interactive -d
+export alias gnuke = git clean -dfX
+# export alias gclean = git clean --interactive -d
 
 export def gpristine [] {
     git reset --hard
@@ -88,7 +88,13 @@ export alias ghh = git help
 
 export alias gignore = git update-index --assume-unchanged
 
-export alias gl = git log
+export def grb [] {
+  let count = (git log --oneline $"(git_main_branch)..HEAD" 
+                | lines | length)
+  git rebase -i $"HEAD~($count)"
+}
+
+export alias gl = git log --oneline $"(git_main_branch)..HEAD"
 export alias glg = git log --stat
 export alias glgp = git log --stat --patch
 export alias glgg = git log --graph
@@ -119,23 +125,6 @@ export alias gpr = git pull --rebase
 export alias gpu = git push upstream
 export alias gpv = git push --verbose
 
-export alias gr = git remote
-export alias gpra = git pull --rebase --autostash
-export alias gprav = git pull --rebase --autostash --verbose
-export alias gprv = git pull --rebase --verbose
-export alias gpsup = git push --set-upstream origin (git_current_branch)
-export alias gra = git remote add
-export alias grb = git rebase
-export alias grba = git rebase --abort
-export alias grbc = git rebase --continue
-export alias grbd = git rebase develop
-export alias grbi = git rebase --interactive
-export alias grbm = git rebase (git_main_branch)
-export alias grbo = git rebase --onto
-export alias grbs = git rebase --skip
-export alias grev = git revert
-export alias grh = git reset
-export alias grhh = git reset --hard
 export def groh [] {
   git fetch origin
   git reset $"origin/$(git_current_branch)" --hard
@@ -199,10 +188,14 @@ export alias gams = git am --skip
 export alias gama = git am --abort
 export alias gamscp = git am --show-current-patch
 
-
 export def gfuck [] {
   git fetch origin
   git reset --hard $"origin/(git_current_branch)"
+}
+
+export def gwip [msg = "wip"] {
+  git add .;
+  git commit -nm $msg;
 }
 
 export def gnah [] {
@@ -226,7 +219,7 @@ export def gnew [name: string] {
 
 export def gmm [] {
     let main = (git_main_branch)
-    git fetch $"($main):($main)"
+    git fetch origin $"($main):($main)"
     git rebase $main
 }
 

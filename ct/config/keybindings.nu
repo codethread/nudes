@@ -503,9 +503,8 @@ export const keybindings = [
       event: {
           send: executehostcommand
           cmd: "commandline -a (
-              ls **/*
-              | where type == file
-              | get name
+              fd --type=directory
+              | lines
               | input list --fuzzy
                   $'Please choose a (ansi magenta)directory(ansi reset) to (ansi cyan_underline)insert(ansi reset):'
           )"
@@ -520,6 +519,21 @@ export const keybindings = [
           send: executehostcommand
           cmd: "cd (fd --hidden --type d --exclude '{Library,Music,Applications,Pictures,Unity,VirtualBox VMs,WebstormProjects,Tools,node_modules,.git,.cargo,go}' . $env.HOME
               | fzf)"
+      }
+    }
+    {
+      name: fuzzy_file
+      modifier: control
+      keycode: char_v
+      mode: [emacs, vi_normal, vi_insert]
+      event: {
+          send: executehostcommand
+          cmd: "commandline -a (
+              rg --files-with-matches .
+              | lines
+              | input list --fuzzy
+                  $'Please choose a (ansi magenta)file(ansi reset) to (ansi cyan_underline)insert(ansi reset):'
+          )"
       }
     }
 ]
