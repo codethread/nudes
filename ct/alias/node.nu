@@ -6,6 +6,8 @@ export def npc [] {
 
 export alias npl = npm -g ls --depth=0
 
+export alias pp = pnpm
+
 # INVALID multiline
 # export alias yy = eval \$(cat package.json | jq -S '.scripts' | sed '1d;$d' | fzf -i --header='[run:]' | sed -E \"s/\\\"(.*)\\\":.*/yarn run \\1/\" )
 

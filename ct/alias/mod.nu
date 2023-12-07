@@ -65,3 +65,8 @@ alias brewdeps = brew deps --graph --installed
 alias ktt = kitty +kitten themes
 alias ktt-dark = kitty +kitten themes --reload-in=all Tokyo Night Storm
 alias ktt-light = kitty +kitten themes --reload-in=all Tokyo Night Day
+
+#---------------------------------------------#
+# KITTY
+# -------------------------------------------#
+alias loggy = cd `~/Library/Mobile Documents/iCloud~com~logseq~logseq/`
