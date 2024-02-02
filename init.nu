@@ -2,7 +2,7 @@ use ct/config/prompt.nu
 use ct/themes.nu themes
 use ct/config [keybindings menus]
 use ct/core *
-use ct/ical
+# use ct/ical
 
 source ct/alias/mod.nu
 

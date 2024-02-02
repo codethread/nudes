@@ -89,8 +89,7 @@ export alias ghh = git help
 export alias gignore = git update-index --assume-unchanged
 
 export def grb [] {
-  let count = (git log --oneline $"(git_main_branch)..HEAD" 
-                | lines | length)
+  let count = (git log --oneline $"(git_main_branch)..HEAD" | lines | length)
   git rebase -i $"HEAD~($count)"
 }
 
@@ -112,6 +111,7 @@ export def gmom [] {
     let main = (git_main_branch)
     git merge $"origin/($main)"
 }
+export alias gconflict = git diff --name-only --diff-filter-U
 
 export alias gp = git push
 export alias gpd = git push --dry-run

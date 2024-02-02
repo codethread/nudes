@@ -34,8 +34,8 @@ alias l = ls -a
 alias finder = ^open -a 'Finder' .
 alias ports = lsof -i tcp:3000
 
-def alert [] {
-  osascript -e 'display notification "Task Finished" with title "CMD"'
+def alert [msg = "Task Finished"] {
+  osascript -e $'display notification "($msg)" with title "CMD"'
   afplay /System/Library/Sounds/Glass.aiff
 }
 

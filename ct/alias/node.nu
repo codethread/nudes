@@ -59,3 +59,11 @@ export def react-native-clean [] {
     yarn install:app 
     yarn run-ios --simulator "iPhone SE (3rd generation)"
 }
+
+export def npm-nope [] {
+  if ('~/.npmrc' | path exists) {
+    mv ~/.npmrc ~/.npmrc_nope
+  } else if ('~/.npmrc_nope' | path exists) {
+    mv ~/.npmrc_nope ~/.npmrc
+  }
+}
