@@ -8,6 +8,7 @@ source ct/alias/mod.nu
 
 use ct/tmux
 use ct/brew
+use ct/kitty
 
 let base_config = {
   hooks: {},
